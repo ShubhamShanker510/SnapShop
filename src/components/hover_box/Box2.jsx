@@ -36,7 +36,7 @@ const Box2 = ({value}) => {
   
   
   return (
-    <div className={`${value} z-20 absolute bg-white w-40 p-3 border border-gray-600 rounded-md `}>
+    <div className={`${value} z-20 absolute bg-white w-40 p-3 border border-gray-400 rounded-md shadow shadow-lg shadow-black  `}>
         <ul className='cursor-pointer inline-block text-gray-700 text-sm font-light'>
             {
               womenData.map((item, index)=>(

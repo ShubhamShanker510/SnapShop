@@ -42,7 +42,7 @@ const Hero = () => {
 
     return (
         <div className="flex h-30 w-[100vw]">
-            <div className="flex m-auto overflow-hidden h-[50%] relative transition ease-out duration-300 w-[60%]">
+            <div className="flex m-auto overflow-hidden h-[50%] relative transition ease-out duration-300 ">
                 <img
                     src={images[current].name}
                     alt={`Slide ${current}`}

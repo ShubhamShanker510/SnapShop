@@ -42,7 +42,7 @@ const Header = () => {
   ];
 
   return (
-    <div className="nav flex justify-between p-[10px]">
+    <div className="nav flex justify-between p-[10px] fixed z-20 bg-white w-[100vw]">
       <div className="left flex items-center">
         <div className="logo">
           <img src={logo} alt="" className="w-[200px]"/>
@@ -63,8 +63,8 @@ const Header = () => {
         </div>
         <div className="right flex items-center w-[50vw] justify-around">
           <div className="input flex items-center mr-7">
-            <input type="text" placeholder="Search for products..."className="border p-2 w-[500px]"/>
-            <span><img src={search} alt=""className="border w-[44px] cursor-pointer"/></span>
+            <input type="text" placeholder="Search for products..."className="border p-2 w-[500px] bg-gray-300 rounded-md relative"/>
+            <span><img src={search} alt=""className="border border-gray-300 w-[40px] cursor-pointer rounded-r-md bg-gray-300 absolute top-4"/></span>
           </div>
           <div className="items flex">
             <div className="profile mr-3 flex flex-col items-center cursor-pointer">
