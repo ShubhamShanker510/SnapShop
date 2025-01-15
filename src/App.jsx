@@ -6,6 +6,7 @@ import Header from './components/header/Header'
 import Hero from './components/hero/Hero'
 import Box from './components/hover_box/Box'
 import Card from './components/cards/Card'
+import Footer from './components/footer/Footer'
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
    <Header/>
    <Hero/>
    <Card/>
+   <Footer/>
    </>
   )
 }
