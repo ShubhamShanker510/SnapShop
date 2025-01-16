@@ -8,10 +8,12 @@ import Box from "../hover_box/Box";
 import Box2 from "../hover_box/Box2";
 import Box3 from "../hover_box/Box3";
 import Box4 from "../hover_box/Box4";
+import ProfileBox from "../hover_box/ProfileBox";
 
 const Header = () => {
   const [display, setDisplay] = useState(-1);
   const [scroll, setScroll] = useState(false);
+  const [box,setBox]=useState(false)
 
   const onMouseEnter = (key) => {
     setDisplay(key);
@@ -20,6 +22,14 @@ const Header = () => {
   const onMouseLeave = () => {
     setDisplay(-1);
   };
+
+  const showBox=()=>{
+    setBox(true)
+  }
+
+  const leaveBox=()=>{
+    setBox(false)
+  }
 
   const links = [
     {
@@ -66,7 +76,7 @@ const Header = () => {
           <ul className="path flex font-bold">
             {links.map((item, key) => (
               <li key={key} className="mr-3 hover:underline hover:text-red-500" onMouseEnter={() => onMouseEnter(key)} onMouseLeave={onMouseLeave}>
-                <a href={item.link}>{item.name}</a>
+                <a href={item.link} className="text-slate-800">{item.name}</a>
                 {display === key && item.name === "MEN" && <Box />}
                 {display === key && item.name === "WOMEN" && <Box2 />}
                 {display === key && item.name === "ELECTRONICS" && <Box3 />}
@@ -82,9 +92,10 @@ const Header = () => {
           <span><img src={search} alt="Search Icon" className="border border-gray-300 w-[40px] cursor-pointer rounded-r-md bg-gray-300 absolute top-4" /></span>
         </div>
         <div className="items flex">
-          <div className="profile mr-3 flex flex-col items-center cursor-pointer">
+          <div className="profile relative mr-3 flex flex-col items-center cursor-pointer hover:text-red-500" onMouseEnter={showBox} onMouseLeave={leaveBox}>
             <img src={profile} alt="Profile Icon" width={20} />
-            <p className="text-sm font-medium">Profile</p>
+            <p className="text-sm font-medium hover:text-red-500 hover:underline">Profile</p>
+            {box && <ProfileBox/>}
           </div>
           <div className="wishlist mr-3 flex flex-col items-center cursor-pointer">
             <img src={heart} alt="Wishlist Icon" width={20} />

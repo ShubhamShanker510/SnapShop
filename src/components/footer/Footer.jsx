@@ -5,11 +5,11 @@ import offer from '../../assets/images/offer.png'
 
 const Footer = () => {
   return (
-    <div className="footer flex flex-col p-4 border border-gray-300">
+    <div className="footer flex flex-col p-4 border border-gray-300  bg-white ">
       <div className="sec1 grid grid-cols-4 mb-5 text-sm">
         <div className="shopping flex flex-col justify-center">
-          <p className="font-semibold text-slate-500">ONLINE SHOPPING</p>
-          <ul className="text-gray-800 font-thin cursor-pointer">
+          <p className="font-semibold">ONLINE SHOPPING</p>
+          <ul className="text-gray-500 cursor-pointer">
             <li>Men</li>
             <li>Women</li>
             <li>Kids</li>
@@ -20,8 +20,8 @@ const Footer = () => {
           </ul>
         </div>
         <div className="customer">
-            <p className="font-semibold text-slate-500">CUSTOMER POLICIES</p>
-            <ul className="text-gray-800 font-thin cursor-pointer">
+            <p className="font-semibold">CUSTOMER POLICIES</p>
+            <ul className="text-gray-500 cursor-pointer">
                 <li>Contact Us</li>
                 <li>FAQ</li>
                 <li>Terms of Use</li>
@@ -31,7 +31,7 @@ const Footer = () => {
         </div>
         <div className="social">
             <div className="label">
-                <p>EXPERIENCE MYNTRA APP ON MOBILE</p>
+                <p className="font-semibold">EXPERIENCE MYNTRA APP ON MOBILE</p>
             </div>
             <div className="play_store cursor-pointer">
                 <a href="/"><img src={playStore} alt="" /></a>

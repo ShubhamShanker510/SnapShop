@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Shimmer from '../shimmer/Shimmer';
 
 
 const Card = () => {
     const [display, setDisplay] = useState(-1);
-    const [data, setData]=useState([]);
+    const [data, setData]=useState();
 
     useEffect(() => {
         axios.get("https://fakestoreapi.com/products?limit=6") 
@@ -12,27 +13,32 @@ const Card = () => {
         .catch((err) => console.error(err));
 
     }, [])
-    
 
+    if(data==null){
+        return <Shimmer/>
+    }else{
     return (
-        <div className='flex flex-col p-2'>
+        <div className='flex flex-col items-center p-2'>
+             <div className="up mb-5 inline-block font-bold text-lg text-slate-800 border-b-2 border-slate-900 mt-1">
+            <p>PRODUCTS</p>
+        </div>
         <div className="grid grid-cols-3 gap-4 m-4 w-[100vw]">
             {data.map((item, index) => (
                 <div key={index} className="relative max-w-[490px] min-w-[490px]">
                     <div 
-                        className={`card mx-10 mt-10 border border-gray-400 rounded-md p-2 flex cursor-pointer justify-around shadow-black shadow-sm transition-all duration-500 group`}
+                        className={`card mx-10 mt-10  bg-white  rounded-md p-2 flex cursor-pointer justify-around hover:shadow-slate-400 hover:shadow-sm  transition-all duration-500 group border border-slate-300`}
                         onMouseEnter={() => setDisplay(index)} 
                         onMouseLeave={() => setDisplay(-1)}
                     >
-                        {/* Image Section */}
+                      
                         <div className="up mr-6 relative">
                             <img 
-                                src={item.image}  // Default image for products
+                                src={item.image} 
                                 alt="Product"
-                                className="rounded-md transition-all duration-300 w-[200px] h-[110px]"
+                                className="rounded-md transition-all duration-300 w-[113px] h-[131px]"
                             />
                         </div>
-                        {/* Card Details */}
+                     
                         <div className="down">
                             <div className="category text-gray-400 text-sm">
                                 <p>{item.category}</p> {/* Product Name */}
@@ -63,5 +69,5 @@ const Card = () => {
         </div>
     );
 };
-
+}
 export default Card;
