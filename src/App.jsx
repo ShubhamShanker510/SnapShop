@@ -6,6 +6,7 @@ import './App.css'
 import Home from './pages/Home/Home'
 import Register from './pages/Register/Register'
 import ShowMore from './pages/showMore/ShowMore'
+import VerticalCards from './components/vertical_cards/VerticalCards'
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
    <Home/>
    <Register/>
    <ShowMore/>
+   {/* <VerticalCards/> */}
    </>
   )
 }
