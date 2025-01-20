@@ -9,11 +9,9 @@ import Shimmer from "../../components/shimmer/Shimmer";
 const Home = () => {
   return (
     <div className=" bg-[#f0ecd5]">
-      <Header />
       <Hero />
       <Categories/>
       <Card />
-      <Footer />
     </div>
   );
 };

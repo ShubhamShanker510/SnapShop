@@ -1,21 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
 
 import Home from './pages/Home/Home'
-import Register from './pages/Register/Register'
+
+import CategoriesPage from './pages/categoriesPage/CategoriesPage'
+import { BrowserRouter as Router,Routes,Route, Outlet, useParams  } from 'react-router-dom'
+
+import Layout from './pages/layout/Layout'
 import ShowMore from './pages/showMore/ShowMore'
-import VerticalCards from './components/vertical_cards/VerticalCards'
 
 
 function App() {
   return (
    <>
-   <Home/>
-   <Register/>
-   <ShowMore/>
-   {/* <VerticalCards/> */}
+     <Router>
+       <Routes>
+         <Route path='/' element={<Layout/>}>
+            <Route path='/' element={<Home/>}/>
+            <Route path='categories/:id' element={<CategoriesPage/>}/>
+            <Route path='products/:id' element={<ShowMore/>}/>
+         </Route>
+       </Routes>
+     </Router>
    </>
   )
 }

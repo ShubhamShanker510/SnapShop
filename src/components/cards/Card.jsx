@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Shimmer from '../shimmer/Shimmer';
+import { useNavigate } from 'react-router-dom';
 
 
 const Card = () => {
     const [display, setDisplay] = useState(-1);
     const [data, setData]=useState();
+    const navigate=useNavigate()
 
     useEffect(() => {
         axios.get("https://fakestoreapi.com/products?limit=6") 
@@ -52,7 +54,7 @@ const Card = () => {
                         </div>
                         {display === index && (
                         <div className="absolute bottom-0 left-0 right-0 flex justify-around mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-5000 transform translate-y-6 group-hover:translate-y-0 z-100">
-                            <button className=" p-2 rounded-md text-white bg-gray-700 cursor-pointer shadow shadow-md shadow-black hover:scale-110">
+                            <button onClick={()=>navigate(`/products/${item.id}`)} className=" p-2 rounded-md text-white bg-gray-700 cursor-pointer shadow shadow-md shadow-black hover:scale-110">
                                 Show More
                             </button>
                             <button className="bg-red-600 p-2 rounded-md text-white cursor-pointer shadow shadow-md shadow-black hover:scale-110">

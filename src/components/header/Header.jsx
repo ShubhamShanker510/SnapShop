@@ -9,6 +9,7 @@ import Box2 from "../hover_box/Box2";
 import Box3 from "../hover_box/Box3";
 import Box4 from "../hover_box/Box4";
 import ProfileBox from "../hover_box/ProfileBox";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [display, setDisplay] = useState(-1);
@@ -70,7 +71,7 @@ const Header = () => {
     <div className={`nav flex justify-between p-[10px] fixed z-20 bg-white w-[100vw] ${scroll ? "border shadow shadow-black shadow-md" : ""}`}>
       <div className="left flex items-center">
         <div className="logo">
-          <img src={logo} alt="Logo" className="w-[200px]" />
+          <Link to='/'><img src={logo} alt="Logo" className="w-[200px]" /></Link>
         </div>
         <div className="nav-link">
           <ul className="path flex font-bold">
