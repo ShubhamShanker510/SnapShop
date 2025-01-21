@@ -34,19 +34,22 @@ const ShowMore = () => {
             setCurrentIndex(currentIndex - 1);
         }
     };
+    const url=`https://fakestoreapi.com/products/${id}`
+   
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const [userResponse, productResponse] = await Promise.all([
-                    axios.get(`https://fakestoreapi.com/products/${id}`),
-                    axios.get('https://fakestoreapi.com/products')
+                    axios.get(url),
+                    axios.get(`https://fakestoreapi.com/products/`)
                 ]);
 
                 setID(id);
 
                 setData1(userResponse.data);
-                setData(productResponse.data);
+                const filteredProduct=productResponse.data.filter(product=>product.category===userResponse.data.category);
+                setData(filteredProduct);
             } catch (err) {
                 console.error(err);
             }
@@ -54,6 +57,7 @@ const ShowMore = () => {
 
         fetchData();
     }, [id]);
+
 
     if (!data1 || !data.length || id!==iD) {
         return <Shimmer/>

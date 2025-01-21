@@ -9,12 +9,14 @@ import Box2 from "../hover_box/Box2";
 import Box3 from "../hover_box/Box3";
 import Box4 from "../hover_box/Box4";
 import ProfileBox from "../hover_box/ProfileBox";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [display, setDisplay] = useState(-1);
   const [scroll, setScroll] = useState(false);
   const [box,setBox]=useState(false)
+  const [input,setInput]=useState('')
+  const navigate=useNavigate()
 
   const onMouseEnter = (key) => {
     setDisplay(key);
@@ -35,19 +37,19 @@ const Header = () => {
   const links = [
     {
       name: "MEN",
-      link: "/men",
+      link: "/categories/mens",
     },
     {
       name: "WOMEN",
-      link: "/women",
+      link: "/categories/womens",
     },
     {
       name: "ELECTRONICS",
-      link: "/electronics",
+      link: "/categories/eletronics",
     },
     {
       name: "JEWELERY",
-      link: "/jewelry"
+      link: "/categories/jwelery"
     }
   ];
 
@@ -67,6 +69,12 @@ const Header = () => {
     };
   }, []);
 
+  const handleSearch=()=>{
+    if(input!==''){
+      navigate('/products',{state:{category:input, data:''}})
+    }
+  }
+
   return (
     <div className={`nav flex justify-between p-[10px] fixed z-20 bg-white w-[100vw] ${scroll ? "border shadow shadow-black shadow-md" : ""}`}>
       <div className="left flex items-center">
@@ -77,7 +85,7 @@ const Header = () => {
           <ul className="path flex font-bold">
             {links.map((item, key) => (
               <li key={key} className="mr-3 hover:underline hover:text-red-500" onMouseEnter={() => onMouseEnter(key)} onMouseLeave={onMouseLeave}>
-                <a href={item.link} className="text-slate-800">{item.name}</a>
+                <Link to={item.link} className="text-slate-800">{item.name}</Link>
                 {display === key && item.name === "MEN" && <Box />}
                 {display === key && item.name === "WOMEN" && <Box2 />}
                 {display === key && item.name === "ELECTRONICS" && <Box3 />}
@@ -89,8 +97,8 @@ const Header = () => {
       </div>
       <div className="right flex items-center w-[50vw] justify-around">
         <div className="input flex items-center mr-7">
-          <input type="text" placeholder="Search for products..." className="border p-2 w-[500px] bg-gray-300 rounded-md relative" />
-          <span><img src={search} alt="Search Icon" className="border border-gray-300 w-[40px] cursor-pointer rounded-r-md bg-gray-300 absolute top-4" /></span>
+          <input type="text" placeholder="Search for products..." className="border p-2 w-[500px] bg-gray-300 rounded-md relative" value={input} onChange={(e)=>setInput(e.target.value)}/>
+          <span><img src={search} alt="Search Icon" className="border border-gray-300 w-[40px] cursor-pointer rounded-r-md bg-gray-300 absolute top-4" onClick={handleSearch}/></span>
         </div>
         <div className="items flex">
           <div className="profile relative mr-3 flex flex-col items-center cursor-pointer hover:text-red-500" onMouseEnter={showBox} onMouseLeave={leaveBox}>

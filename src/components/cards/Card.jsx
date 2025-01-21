@@ -21,7 +21,7 @@ const Card = () => {
     }else{
     return (
         <div className='flex flex-col items-center p-2'>
-             <div className="up mb-5 inline-block font-bold text-lg text-slate-800 border-b-2 border-slate-900 mt-1">
+             <div className="up inline-block font-bold text-lg text-slate-800 border-b-2 border-slate-900 mt-1">
             <p>PRODUCTS</p>
         </div>
         <div className="grid grid-cols-3 gap-4 m-4 w-[100vw]">

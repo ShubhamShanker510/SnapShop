@@ -9,7 +9,7 @@ const VerticalCards = ({data}) => {
     <div className="vertical_cards p-5 mb-6 grid grid-cols-4 gap-20">
         {
         data.map((item,index)=>(
-            <div className="div border w-10/12 h-[440px] bg-white flex flex-col p-3 hover:shadow hover:shadow-2xl hover:shadow-gray-600" key={index}>
+            <div className="div mt-10 border w-10/12 h-[440px] bg-white flex flex-col p-3 hover:shadow hover:shadow-2xl hover:shadow-gray-600" key={index}>
             <div className="img flex justify-center items-center">
                 <img src={item.image} alt="" className='h-[200px]'/>
             </div>

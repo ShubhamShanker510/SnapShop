@@ -37,6 +37,10 @@ const Register = () => {
                        }
                    </select>
                 </div>
+                <div className="city">
+                    <input type="text" placeholder='Enter Your City' />
+                </div>
+                
             </div>
         </form>
     </div>
