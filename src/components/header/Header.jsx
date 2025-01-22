@@ -76,7 +76,7 @@ const Header = () => {
   }
 
   return (
-    <div className={`nav flex justify-between p-[10px] fixed z-20 bg-white w-[100vw] ${scroll ? "border shadow shadow-black shadow-md" : ""}`}>
+    <div className={`nav flex justify-between p-[10px] fixed top-0 left-0 right-0 z-20 bg-white w-[100vw] ${scroll ? "border shadow shadow-black shadow-md" : ""}`}>
       <div className="left flex items-center">
         <div className="logo">
           <Link to='/'><img src={logo} alt="Logo" className="w-[200px]" /></Link>
@@ -97,7 +97,9 @@ const Header = () => {
       </div>
       <div className="right flex items-center w-[50vw] justify-around">
         <div className="input flex items-center mr-7">
-          <input type="text" placeholder="Search for products..." className="border p-2 w-[500px] bg-gray-300 rounded-md relative" value={input} onChange={(e)=>setInput(e.target.value)}/>
+          <input type="text" placeholder="Search for products..." className="border p-2 w-[500px] bg-gray-300 rounded-md relative" value={input} onChange={(e)=>setInput(e.target.value)} onKeyDown={(e)=> {if(e.key==="Enter"){
+            handleSearch()
+          }}}/>
           <span><img src={search} alt="Search Icon" className="border border-gray-300 w-[40px] cursor-pointer rounded-r-md bg-gray-300 absolute top-4" onClick={handleSearch}/></span>
         </div>
         <div className="items flex">
@@ -106,10 +108,12 @@ const Header = () => {
             <p className="text-sm font-medium hover:text-red-500 hover:underline">Profile</p>
             {box && <ProfileBox/>}
           </div>
+          <Link to='/wishlist'>
           <div className="wishlist mr-3 flex flex-col items-center cursor-pointer">
             <img src={heart} alt="Wishlist Icon" width={20} />
             <p className="text-sm font-medium">Wishlist</p>
           </div>
+          </Link>
           <div className="bag mr-3 flex flex-col items-center cursor-pointer">
             <img src={bag} alt="Bag Icon" width={20} />
             <p className="text-sm font-medium">Bag</p>
