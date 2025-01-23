@@ -1,64 +1,58 @@
 import React, { useEffect, useState } from "react";
 import binImage from "../../assets/images/bin.png";
-import minusImage from "../../assets/images/minus.png";
-import addImage from "../../assets/images/add.png";
+
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
-
+import Counter from "./Counter";
 const WishListCard = () => {
-  const [counter, setCounter] = useState(1);
   const [path, setPath] = useState(false);
   const [data, setData] = useState([]);
   const [btn,setBtn]=useState(false);
 
 
-  const HandleIncrease = () => {
-    setCounter(counter + 1);
-  };
-
-  const HandleDecrease = () => {
-    if (counter > 1) {
-      setCounter(counter - 1);
-      
-    } else {
-      setCounter(1);
-
-    }
-  };
+  
 
   const location = useLocation();
 
   useEffect(() => {
-   
-    if (location.pathname === "/cart") {
-      axios
-      .get("http://localhost:3000/cart")
-      .then((res) => setData(res.data));
-      setPath(true);
-      setBtn(false)
-    } else {
-      axios
-      .get("http://localhost:3000/wishlist")
-      .then((res) => setData(res.data));
-      setPath(false);
-      setBtn(true);
-    }
-    
-  }, [data,counter]);
+    const getData = async () => {
+      try {
+        if (location.pathname === "/cart") {
+          const res = await axios.get("http://localhost:3000/cart");
+          setData(res.data);
+          setPath(true);
+          setBtn(false);
+        } else {
+          const res = await axios.get("http://localhost:3000/wishlist");
+          setData(res.data);
+          setPath(false);
+          setBtn(true);
+        }
+      } catch (error) {
+        console.error("Error fetching data", error);
+      }
+    };
 
-  const HandleDelete=(id)=>{
-    if (location.pathname === "/cart"){
-      axios.delete(`http://localhost:3000/cart/${id}`)
-    }
-    else{
-    axios.delete(`http://localhost:3000/wishlist/${id}`)
-    }
-    toast.success('Item Deleted Successfully', { autoClose: 1000 });
+    getData();
+  }, []);
 
-  }
+  const handleDelete = async (id) => {
+    try {
+      if (location.pathname === "/cart") {
+        await axios.delete(`http://localhost:3000/cart/${id}`);
+      } else {
+        await axios.delete(`http://localhost:3000/wishlist/${id}`);
+      }
+      setData(prevData => prevData.filter(item => item.id !== id));
+      toast.success('Item Deleted Successfully', { autoClose: 1000 });
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      toast.error('Failed to delete item', { autoClose: 1000 });
+    }
+  };
 
 
   return (
@@ -71,7 +65,7 @@ const WishListCard = () => {
         >
           <div className="left p-2">
             <div className="img w-10/12">
-              <img src={item.image} className="w-[200px]" alt="" />
+              <img src={item.image} className="max-w-[190px]" alt="" />
             </div>
           </div>
           <div className="right">
@@ -87,30 +81,10 @@ const WishListCard = () => {
                 <span>/5 ⭐ </span>
               </p>
             </div>
-            <div className="price text-orange-600 font-semibold">
-              Rs. {item.price*counter}
-            </div>
+            
             <div className="down2 flex justify-between items-center mb-3">
               {path && (
-                <div className="quantity flex justify-between items-center">
-                  <button className="">
-                    <img
-                      src={minusImage}
-                      alt=""
-                      className="hover:scale-110 w-[30px]"
-                      onClick={HandleDecrease}
-                    />
-                  </button>
-                  <p className="px-5">{counter}</p>
-                  <button className="">
-                    <img
-                      src={addImage}
-                      alt=""
-                      className="w-[35px] hover:scale-110"
-                      onClick={HandleIncrease}
-                    />
-                  </button>
-                </div>
+                <Counter priceValue={item.price}/>
               )}
             </div>
             <div className="down3 flex">
@@ -120,7 +94,7 @@ const WishListCard = () => {
               </div>
               }
               <div className="bin">
-                <button onClick={()=>HandleDelete(item.id)}>
+                <button onClick={()=>handleDelete(item.id)}>
                   <img
                     src={binImage}
                     className="w-[30px] hover:scale-110 bg-white"
