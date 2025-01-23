@@ -1,9 +1,28 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import { apiCall } from '../../hooks/apiCall';
 
 
 const VerticalCards = ({data}) => {
     const navigate=useNavigate();
+
+     const HandleCart=(id, image, title, description, price, rate)=>{
+                const cartData={
+                    productId: id,
+                    image,
+                    title,
+                    price,
+                    description,
+                    rate,
+                }
+                apiCall(cartData)
+                .then(()=>toast.success('Added to Cart Successfully', { autoClose: 5000 }))
+                .catch(()=>toast.error('Something went Wrong', { autoClose: 5000 }))
+                
+            }
+    
 
   return (
     <div className="vertical_cards p-5 mb-6 grid grid-cols-4 gap-20">
@@ -25,10 +44,11 @@ const VerticalCards = ({data}) => {
                         <button className=' bg-gray-700 p-1 text-white rounded-sm hover:bg-gray-800 hover:shadow hover:shadow-sm hover:shadow-gray-600' onClick={()=>navigate(`/products/${item.id}`)}>Show More</button>
                     </div>
                     <div className="cartBtn">
-                        <button className=' bg-red-700 p-1 text-white rounded-sm hover:bg-red-800 hover:shadow hover:shadow-sm hover:shadow-gray-600'>Add to Cart</button>
+                        <button onClick={()=>HandleCart(item.id, item.image, item.title, item.description, item.price*200, item.rating.rate)} className=' bg-red-700 p-1 text-white rounded-sm hover:bg-red-800 hover:shadow hover:shadow-sm hover:shadow-gray-600'>Add to Cart</button>
                     </div>
                 </div>
             </div>
+            <ToastContainer/>
         </div>
         ))
     }

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Shimmer from '../shimmer/Shimmer';
 import { useNavigate } from 'react-router-dom';
+import { apiCall } from '../../hooks/apiCall';
+import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 const Card = () => {
@@ -15,6 +18,20 @@ const Card = () => {
         .catch((err) => console.error(err));
 
     }, [])
+    const HandleCart=(id, image, title, description, price, rate)=>{
+            const cartData={
+                productId: id,
+                image,
+                title,
+                price,
+                description,
+                rate,
+            }
+            apiCall(cartData)
+            .then(()=>toast.success('Added to Cart Successfully', { autoClose: 5000 }))
+            .catch(()=>toast.error('Something went Wrong', { autoClose: 5000 }))
+            
+        }
 
     if(data==null){
         return <Shimmer/>
@@ -57,7 +74,7 @@ const Card = () => {
                             <button onClick={()=>navigate(`/products/${item.id}`)} className=" p-2 rounded-md text-white bg-gray-700 cursor-pointer shadow shadow-md shadow-black hover:scale-110">
                                 Show More
                             </button>
-                            <button className="bg-red-600 p-2 rounded-md text-white cursor-pointer shadow shadow-md shadow-black hover:scale-110">
+                            <button onClick={()=>HandleCart(item.id, item.image, item.title, item.description, item.price*200, item.rating.rate)} className="bg-red-600 p-2 rounded-md text-white cursor-pointer shadow shadow-md shadow-black hover:scale-110">
                                 Add To Cart
                             </button>
                         </div>
@@ -68,6 +85,7 @@ const Card = () => {
                 </div>
             ))}
         </div>
+        <ToastContainer/>
         </div>
     );
 };

@@ -103,21 +103,23 @@ const Header = () => {
           <span><img src={search} alt="Search Icon" className="border border-gray-300 w-[40px] cursor-pointer rounded-r-md bg-gray-300 absolute top-4" onClick={handleSearch}/></span>
         </div>
         <div className="items flex">
-          <div className="profile relative mr-3 flex flex-col items-center cursor-pointer hover:text-red-500" onMouseEnter={showBox} onMouseLeave={leaveBox}>
+          <div className="profile relative mr-3 flex flex-col items-center cursor-pointer hover:scale-110" onMouseEnter={showBox} onMouseLeave={leaveBox}>
             <img src={profile} alt="Profile Icon" width={20} />
-            <p className="text-sm font-medium hover:text-red-500 hover:underline">Profile</p>
+            <p className="text-sm font-medium ">Profile</p>
             {box && <ProfileBox/>}
           </div>
           <Link to='/wishlist'>
-          <div className="wishlist mr-3 flex flex-col items-center cursor-pointer">
+          <div className="wishlist mr-3 flex flex-col items-center cursor-pointer hover:scale-110 hover:font-bold">
             <img src={heart} alt="Wishlist Icon" width={20} />
             <p className="text-sm font-medium">Wishlist</p>
           </div>
           </Link>
-          <div className="bag mr-3 flex flex-col items-center cursor-pointer">
+          <Link to='/cart'>
+          <div className="bag mr-3 flex flex-col items-center cursor-pointer hover:scale-110">
             <img src={bag} alt="Bag Icon" width={20} />
             <p className="text-sm font-medium">Bag</p>
           </div>
+          </Link>
         </div>
       </div>
     </div>

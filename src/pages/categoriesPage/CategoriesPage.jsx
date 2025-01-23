@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Shimmer from '../../components/shimmer/Shimmer';
 
-const CategoriesPage = ({headerData}) => {
+const CategoriesPage = () => {
 
     const [data,setData]=useState([])
     const {id}=useParams()

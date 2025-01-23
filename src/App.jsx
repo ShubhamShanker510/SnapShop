@@ -11,9 +11,11 @@ import ShowMore from './pages/showMore/ShowMore'
 import HeaderPage from './pages/headerPage/HeaderPage'
 import Register from './pages/Register/Register'
 import WishlistPage from './pages/wishlistPage/WishlistPage'
+import CartPage from './pages/cartPage/CartPage'
 
 
 function App() {
+  
   return (
    <>
      <Router>
@@ -24,6 +26,7 @@ function App() {
             <Route path='products/:id' element={<ShowMore/>}/>
             <Route path='products' element={<HeaderPage/>}/>
             <Route path='wishlist' element={<WishlistPage/>}/>
+            <Route path='cart' element={<CartPage/>}/>
          </Route>
             <Route path='/register' element={<Register/>}/>
        </Routes>

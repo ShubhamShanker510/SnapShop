@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import menImage from "../../assets/images/mens.png";
 import binImage from "../../assets/images/bin.png";
 import minusImage from "../../assets/images/minus.png";
 import addImage from "../../assets/images/add.png";
@@ -11,51 +10,60 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const WishListCard = () => {
   const [counter, setCounter] = useState(1);
-  const [price, setPrice] = useState(null);
   const [path, setPath] = useState(false);
   const [data, setData] = useState([]);
-  const orignalPrice = 200;
+  const [btn,setBtn]=useState(false);
+
 
   const HandleIncrease = () => {
     setCounter(counter + 1);
-    setPrice(price + orignalPrice);
   };
 
   const HandleDecrease = () => {
     if (counter > 1) {
       setCounter(counter - 1);
-      setPrice(price - orignalPrice);
+      
     } else {
       setCounter(1);
-      setPrice(orignalPrice);
+
     }
   };
 
   const location = useLocation();
 
   useEffect(() => {
-    axios
+   
+    if (location.pathname === "/cart") {
+      axios
+      .get("http://localhost:3000/cart")
+      .then((res) => setData(res.data));
+      setPath(true);
+      setBtn(false)
+    } else {
+      axios
       .get("http://localhost:3000/wishlist")
       .then((res) => setData(res.data));
-
-    if (location.pathname === "/cart") {
-      setPath(true);
-    } else {
       setPath(false);
+      setBtn(true);
     }
-  }, [data]);
+    
+  }, [data,counter]);
 
   const HandleDelete=(id)=>{
+    if (location.pathname === "/cart"){
+      axios.delete(`http://localhost:3000/cart/${id}`)
+    }
+    else{
     axios.delete(`http://localhost:3000/wishlist/${id}`)
+    }
     toast.success('Item Deleted Successfully', { autoClose: 1000 });
 
   }
 
+
   return (
     <div className="wishlist-card flex flex-col justify-center items-center">
-        <div className="intersted_head mb-5 font-bold text-lg text-slate-800 border-b-2 border-slate-900 mt-20">
-                Wishlist
-        </div>
+        
       {data.map((item, index) => (
         <div
           key={index}
@@ -80,7 +88,7 @@ const WishListCard = () => {
               </p>
             </div>
             <div className="price text-orange-600 font-semibold">
-              Rs. {price || item.price}
+              Rs. {item.price*counter}
             </div>
             <div className="down2 flex justify-between items-center mb-3">
               {path && (
@@ -106,9 +114,11 @@ const WishListCard = () => {
               )}
             </div>
             <div className="down3 flex">
-              <div className="cartbtn border border-red-600 px-[110px] py-1 bg-red-600 text-white rounded-sm hover:bg-white hover:text-red-600 mr-3 cursor-pointer shadow shadow-sm shadow-gray-700">
+              {
+                btn && <div className="cartbtn border border-red-600 px-[110px] py-1 bg-red-600 text-white rounded-sm hover:bg-white hover:text-red-600 mr-3 cursor-pointer shadow shadow-sm shadow-gray-700">
                 <button>ADD TO CART</button>
               </div>
+              }
               <div className="bin">
                 <button onClick={()=>HandleDelete(item.id)}>
                   <img
