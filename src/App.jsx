@@ -12,6 +12,7 @@ import HeaderPage from './pages/headerPage/HeaderPage'
 import Register from './pages/Register/Register'
 import WishlistPage from './pages/wishlistPage/WishlistPage'
 import CartPage from './pages/cartPage/CartPage'
+import NotFound from './pages/not found/NotFound'
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path='wishlist' element={<WishlistPage/>}/>
             <Route path='cart' element={<CartPage/>}/>
          </Route>
+            <Route path='*' element={<NotFound text="Something Went Wrong...." delay={100}/>}/>
             <Route path='/register' element={<Register/>}/>
        </Routes>
      </Router>
