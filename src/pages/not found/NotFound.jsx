@@ -25,7 +25,7 @@ const NotFound = ({text,delay}) => {
     </div>
     <div className="div flex flex-col items-center">
         <p className='font-bold text-[200px] text-blue-950'>OOPS !</p>
-        <p className='text-[50px]'>{currentText}</p>
+        <p className='text-[50px] font-semibold'>{currentText}</p>
     </div>
     </div>
   )

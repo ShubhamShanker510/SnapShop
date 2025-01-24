@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import minusImage from "../../assets/images/minus.png";
 import addImage from "../../assets/images/add.png";
 import { useDispatch, useSelector } from 'react-redux';
 import { counterVal } from '../../redux/shareDate';
+import axios from 'axios';
 
-const Counter = ({priceValue}) => {
-    const [counter, setCounter] = useState(1);
+const Counter = ({priceValue,id,quantity}) => {
+    const [counter, setCounter] = useState(quantity);
     const dispatch = useDispatch();
 
     const HandleIncrease = () => {
@@ -17,8 +18,12 @@ const Counter = ({priceValue}) => {
     const HandleDecrease = () => {
         const newCounter = counter > 1 ? counter - 1 : 1;
         setCounter(newCounter);
-        dispatch(counterVal(newCounter));  // Dispatch with the updated counter value
+        dispatch(counterVal(newCounter));  
     };
+
+    useEffect(()=>{
+        axios.patch(`http://localhost:3000/cart/${id}`,{quantity:counter})
+    },[counter,id])
 
     const countValue = useSelector((store) => store.data.value);
     console.log(countValue);

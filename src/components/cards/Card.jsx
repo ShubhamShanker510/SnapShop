@@ -26,6 +26,7 @@ const Card = () => {
                 price,
                 description,
                 rate,
+                quantity:1
             }
             apiCall(cartData)
             .then(()=>toast.success('Added to Cart Successfully', { autoClose: 5000 }))

@@ -29,7 +29,7 @@ function App() {
             <Route path='wishlist' element={<WishlistPage/>}/>
             <Route path='cart' element={<CartPage/>}/>
          </Route>
-            <Route path='*' element={<NotFound text="Something Went Wrong...." delay={100}/>}/>
+            <Route path='*' element={<NotFound text="ERROR 404 ! Page Not Found" delay={100}/>}/>
             <Route path='/register' element={<Register/>}/>
        </Routes>
      </Router>

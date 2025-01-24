@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 import Counter from "./Counter";
+import NotFound from "../../pages/not found/NotFound";
+import PaymentBox from "../paymentBox/PaymentBox";
 const WishListCard = () => {
   const [path, setPath] = useState(false);
   const [data, setData] = useState([]);
@@ -54,6 +56,11 @@ const WishListCard = () => {
     }
   };
 
+  if(data.length===0){
+    return <NotFound text={"Items Not Found!!"} delay={100}/>
+  }
+  else{
+
 
   return (
     <div className="wishlist-card flex flex-col justify-center items-center">
@@ -84,7 +91,7 @@ const WishListCard = () => {
             
             <div className="down2 flex justify-between items-center mb-3">
               {path && (
-                <Counter priceValue={item.price}/>
+                <Counter priceValue={item.price} id={item.id} quantity={item.quantity}/>
               )}
             </div>
             <div className="down3 flex">
@@ -106,9 +113,14 @@ const WishListCard = () => {
           </div>
         </div>
       ))}
+      {
+        path && <PaymentBox/>
+      }
       <ToastContainer />
     </div>
   );
 };
+
+}
 
 export default WishListCard;
