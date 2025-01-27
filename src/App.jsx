@@ -13,6 +13,8 @@ import Register from './pages/Register/Register'
 import WishlistPage from './pages/wishlistPage/WishlistPage'
 import CartPage from './pages/cartPage/CartPage'
 import NotFound from './pages/not found/NotFound'
+import PaymentGateway from './components/paymentBox/PaymentGateway'
+import ShippingInfo from './components/paymentBox/ShippingInfo'
 
 
 function App() {
@@ -31,6 +33,8 @@ function App() {
          </Route>
             <Route path='*' element={<NotFound text="ERROR 404 ! Page Not Found" delay={100}/>}/>
             <Route path='/register' element={<Register/>}/>
+            <Route path='/payment' element={<PaymentGateway/>}/>
+            <Route path='/shipping' element={<ShippingInfo/>}/>
        </Routes>
      </Router>
    </>
