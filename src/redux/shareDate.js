@@ -1,19 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 
 const shareDataSlice = createSlice({
-  name: "data",
-  initialState: {
-    value: 1,
+  name: "user",
+  initialState:{
+    currentUser:null
   },
   reducers: {
 
-    counterVal: (state, action) => {
-      state.value = action.payload; 
+     getUserData: (state, action) => {
+      state.currentUser = action.payload; 
     },
   },
 });
 
 
-export const { counterVal } = shareDataSlice.actions;
+export const { getUserData } = shareDataSlice.actions;
 
 export default shareDataSlice.reducer;

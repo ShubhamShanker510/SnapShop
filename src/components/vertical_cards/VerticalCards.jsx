@@ -28,7 +28,7 @@ const VerticalCards = ({data}) => {
             .then(() => toast.success('Added to Cart Successfully', { autoClose: 5000 }))
             .catch(() => toast.error('Something went wrong', { autoClose: 5000 }));
    
-        dispatch(addItemToCart(cartData)); // Dispatching action
+        dispatch(addItemToCart(cartData));
     };
    
     

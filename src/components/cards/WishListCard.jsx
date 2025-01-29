@@ -9,14 +9,18 @@ import 'react-toastify/dist/ReactToastify.css';
 import Counter from "./Counter";
 import NotFound from "../../pages/not found/NotFound";
 import PaymentBox from "../paymentBox/PaymentBox";
+import { useDispatch, useSelector } from "react-redux";
+import { removeItemToCart } from "../../redux/cartSlice";
 const WishListCard = () => {
   const [path, setPath] = useState(false);
   const [data, setData] = useState([]);
   const [btn,setBtn]=useState(false);
+  const item = useSelector((state) => state.cart.items); 
 
+  const dispatch=useDispatch()
 
   
-
+  console.log(item, "item");
   const location = useLocation();
 
   useEffect(() => {
@@ -39,7 +43,13 @@ const WishListCard = () => {
     };
 
     getData();
+    // setData(item)
   }, []);
+
+
+
+ 
+
 
   const handleDelete = async (id) => {
     try {
@@ -54,6 +64,8 @@ const WishListCard = () => {
       console.error("Error deleting item:", error);
       toast.error('Failed to delete item', { autoClose: 1000 });
     }
+    console.log(id, 'id');
+      dispatch(removeItemToCart(id))
   };
 
   if(data.length===0){
@@ -101,7 +113,7 @@ const WishListCard = () => {
               </div>
               }
               <div className="bin">
-                <button onClick={()=>handleDelete(item.id)}>
+                <button onClick={()=>handleDelete(item.productId)}>
                   <img
                     src={binImage}
                     className="w-[30px] hover:scale-110 bg-white"
