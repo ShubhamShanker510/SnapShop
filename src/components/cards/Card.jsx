@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Shimmer from '../shimmer/Shimmer';
 import { useNavigate } from 'react-router-dom';
-import { apiCall } from '../../hooks/apiCall';
+import { updateData } from '../../hooks/apiCall';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 
 const Card = () => {
     const [display, setDisplay] = useState(-1);
     const [data, setData]=useState();
     const navigate=useNavigate()
+    const userData= useSelector((store) => store.user.currentUser);
 
     useEffect(() => {
         axios.get("https://fakestoreapi.com/products?limit=6") 
@@ -28,9 +30,8 @@ const Card = () => {
                 rate,
                 quantity:1
             }
-            apiCall(cartData)
-            .then(()=>toast.success('Added to Cart Successfully', { autoClose: 5000 }))
-            .catch(()=>toast.error('Something went Wrong', { autoClose: 5000 }))
+            updateData(userData,cartData)
+            
             
         }
 

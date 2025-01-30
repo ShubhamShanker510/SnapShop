@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import binImage from "../../assets/images/bin.png";
+import { getCartData} from "../../hooks/apiCall";
 
 import { useLocation } from "react-router-dom";
 import axios from "axios";
@@ -15,27 +16,29 @@ const WishListCard = () => {
   const [path, setPath] = useState(false);
   const [data, setData] = useState([]);
   const [btn,setBtn]=useState(false);
-  const item = useSelector((state) => state.cart.items); 
+  // const item = useSelector((state) => state.cart.items); 
+  const userData=useSelector((store) => store.user.currentUser)
 
   const dispatch=useDispatch()
 
   
-  console.log(item, "item");
+  // console.log(item, "item");
   const location = useLocation();
 
   useEffect(() => {
     const getData = async () => {
       try {
         if (location.pathname === "/cart") {
-          const res = await axios.get("http://localhost:3000/cart");
-          setData(res.data);
+          const res=await getCartData(userData.email)
+          console.log("1",res)
+          setData(res);
           setPath(true);
           setBtn(false);
         } else {
-          const res = await axios.get("http://localhost:3000/wishlist");
-          setData(res.data);
-          setPath(false);
-          setBtn(true);
+          // const res = await axios.get("http://localhost:3000/wishlist");
+          // setData(res.data);
+          // setPath(false);
+          // setBtn(true);
         }
       } catch (error) {
         console.error("Error fetching data", error);
@@ -45,6 +48,8 @@ const WishListCard = () => {
     getData();
     // setData(item)
   }, []);
+
+  console.log("2",data);
 
 
 
@@ -100,7 +105,7 @@ const WishListCard = () => {
                 <span>/5 ⭐ </span>
               </p>
             </div>
-            
+
             <div className="down2 flex justify-between items-center mb-3">
               {path && (
                 <Counter priceValue={item.price} id={item.id} quantity={item.quantity}/>

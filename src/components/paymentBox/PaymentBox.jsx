@@ -7,8 +7,8 @@ import PaymentGateway from './PaymentGateway';
 import { useNavigate } from 'react-router-dom';
 
 const PaymentBox = () => {
-    const item=useSelector((store)=>store.cart.items);
-    console.log("Payment",item)
+    // const item=useSelector((store)=>store.cart.items);
+    // console.log("Payment",item)
     
     // let totalPrice1=0;
     // for(let i=0;i<item.length;i++){
@@ -16,7 +16,7 @@ const PaymentBox = () => {
     // }
     
     const [price,setPrice]=useState(0);
-    const countValue = useSelector((store) => store.data.value);
+    // const countValue = useSelector((store) => store.data.value);
     const navigate=useNavigate()
     const fetchData = async () => {
         try {

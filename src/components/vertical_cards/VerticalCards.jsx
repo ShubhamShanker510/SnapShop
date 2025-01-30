@@ -2,33 +2,29 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
-import { apiCall } from '../../hooks/apiCall';
-import { useDispatch } from 'react-redux';
+import { updateData } from '../../hooks/apiCall';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart } from '../../redux/cartSlice';
 
 
 const VerticalCards = ({data}) => {
     const navigate=useNavigate();
     const dispatch=useDispatch()
+    const userData= useSelector((store) => store.user.currentUser);
 
     const HandleCart = (id, image, title, description, price, rate) => {
-        const cartData = {
-            productId: id,
-            image,
-            title,
-            price,
-            description,
-            rate,
-            quantity: 1
-        };
-   
-        console.log('Dispatching:', cartData);
-   
-        apiCall(cartData)
-            .then(() => toast.success('Added to Cart Successfully', { autoClose: 5000 }))
-            .catch(() => toast.error('Something went wrong', { autoClose: 5000 }));
-   
-        dispatch(addItemToCart(cartData));
+       const currentItem={
+        id,
+        image,
+        title,
+        description,
+        price,
+        rate,
+        quantity:1
+       }
+       updateData(userData.email,currentItem)
+       .then(()=>toast.success("Added to cart"))
+       .catch(()=>toast.error("Something went wrong"))
     };
    
     

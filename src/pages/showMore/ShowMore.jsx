@@ -12,7 +12,8 @@ import Shimmer from '../../components/shimmer/Shimmer';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
-import {apiCall} from '../../hooks/apiCall.js'
+import { updateData} from '../../hooks/apiCall.js'
+import { useSelector } from 'react-redux';
 
 
 const ShowMore = () => {
@@ -23,6 +24,8 @@ const ShowMore = () => {
     const len = reviewData1.length;
     const len1 = reviewData1.length;
     const { id } = useParams();
+    const userData= useSelector((store) => store.user.currentUser);
+    console.log(userData)
 
     const handleNextClick = () => {
         if (currentIndex >= len - 1 && currentIndex >= len1 - 1) {
@@ -88,10 +91,9 @@ const ShowMore = () => {
             rate,
             quantity:1
         }
-        apiCall(cartData)
-        .then(()=>toast.success('Added to Cart Successfully', { autoClose: 5000 }))
-        .catch(()=>toast.error('Something went Wrong', { autoClose: 5000 }))
-        
+        updateData(userData.email,cartData)
+        .then(()=>toast.success("Added to cart"))
+        .catch(()=>toast.error("Somethng went wrong"))
     }
 
     if (!data1 || !data.length || id !== iD) {

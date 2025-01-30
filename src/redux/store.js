@@ -6,17 +6,16 @@ import persistReducer from "redux-persist/es/persistReducer";
 import persistStore from "redux-persist/es/persistStore";
 
 const persistConfig = {
-  key: "cart", // Persisting the cart data instead of user data
+  key: "user", 
   storage,
 };
 
-// Persist only the cart state (if you want cart data to be persisted)
-const persistedCartReducer = persistReducer(persistConfig, cartSlice);
+
+const persistedCartReducer = persistReducer(persistConfig, shareDataSlice);
 
 const store = configureStore({
   reducer: {
-    user: shareDataSlice, // No persistence for user data
-    cart: persistedCartReducer, // Persisted cart data
+    user: persistedCartReducer, 
   },
 });
 

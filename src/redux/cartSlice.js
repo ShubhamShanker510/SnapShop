@@ -23,6 +23,7 @@ const cartSlice=createSlice({
               return total + item.price * item.quantity;
             });
         }
+        
          
     }
 })
