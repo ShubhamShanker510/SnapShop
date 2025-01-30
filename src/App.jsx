@@ -16,9 +16,14 @@ import NotFound from './pages/not found/NotFound'
 import PaymentGateway from './components/paymentBox/PaymentGateway'
 import ShippingInfo from './components/paymentBox/ShippingInfo'
 import Login from './pages/Register/Login'
+import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 
 function App() {
+ 
+
   
   return (
    <>

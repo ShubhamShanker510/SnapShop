@@ -11,6 +11,7 @@ const VerticalCards = ({data}) => {
     const navigate=useNavigate();
     const dispatch=useDispatch()
     const userData= useSelector((store) => store.user.currentUser);
+    
 
     const HandleCart = (id, image, title, description, price, rate) => {
        const currentItem={
@@ -22,7 +23,11 @@ const VerticalCards = ({data}) => {
         rate,
         quantity:1
        }
-       updateData(userData.email,currentItem)
+       if(userData===null){
+            return toast.warn("Please login",{autoClose:3000})
+       }
+
+       updateData(userData.email,currentItem,id,userData.quantity)
        .then(()=>toast.success("Added to cart"))
        .catch(()=>toast.error("Something went wrong"))
     };

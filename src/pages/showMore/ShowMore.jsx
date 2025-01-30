@@ -12,7 +12,7 @@ import Shimmer from '../../components/shimmer/Shimmer';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
-import { updateData} from '../../hooks/apiCall.js'
+import { updateData, updateWihlistData} from '../../hooks/apiCall.js'
 import { useSelector } from 'react-redux';
 
 
@@ -77,8 +77,13 @@ const ShowMore = () => {
             description,
             rate,
         };
-        axios.post('http://localhost:3000/wishlist', wishlist);
-        toast.success('Added to Wishlist Successfully', { autoClose: 5000 });
+        if(userData===null){
+                return toast.warn("Please login",{autoClose:3000})
+        }
+
+        updateWihlistData(userData.email,wishlist)
+        .then(()=>toast.success("Added to wishlist"))
+        .catch((err)=>toast.error("Something went wrong"))
     }, []);
 
     const HandleCart=(id, image, title, description, price, rate)=>{
@@ -91,6 +96,10 @@ const ShowMore = () => {
             rate,
             quantity:1
         }
+        if(userData===null){
+            return toast.warn("Please login",{autoClose:3000})
+        }
+
         updateData(userData.email,cartData)
         .then(()=>toast.success("Added to cart"))
         .catch(()=>toast.error("Somethng went wrong"))

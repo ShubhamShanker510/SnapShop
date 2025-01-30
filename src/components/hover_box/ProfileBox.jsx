@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getUserData } from '../../redux/shareDate';
 
 const ProfileBox = () => {
   const [login, setLogin] = useState(false);
   const userData = useSelector((store) => store.user.currentUser);
   const dispatch = useDispatch();
+  const navigate=useNavigate()
 
   useEffect(() => {
     if (userData !== null) {
@@ -18,6 +19,7 @@ const ProfileBox = () => {
 
   const handleClick = () => {
     dispatch(getUserData(null));
+    navigate('/')
   };
 
 
