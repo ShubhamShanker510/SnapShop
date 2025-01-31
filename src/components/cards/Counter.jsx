@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import minusImage from "../../assets/images/minus.png";
 import addImage from "../../assets/images/add.png";
 import { useDispatch, useSelector } from 'react-redux';
-import { updatecartQuantity } from '../../hooks/apiCall';
+import { getUpdatedPrice, updatecartQuantity } from '../../hooks/apiCall';
 import { getUserCartId } from '../../redux/shareDate';
 
 const Counter = ({ priceValue, id, quantity }) => {
@@ -12,28 +12,34 @@ const Counter = ({ priceValue, id, quantity }) => {
   const ItemId = useSelector((store) => store.user.cartId);
   const userData=useSelector((store)=>store.user.currentUser)
 
-  const HandleIncrease = () => {
-    // Update the counter based on the previous value
-    setCounter((prevCounter) => {
-      const newCounter = prevCounter + 1;
-      updatecartQuantity(userData.email,id, newCounter); 
-      return newCounter;
-    });
+  const HandleIncrease = async () => {
+    const newCounter = counter + 1;
+    setCounter(newCounter); 
+    try {
+      await updatecartQuantity(userData.email, id, newCounter);
+      await getUpdatedPrice(userData.email,dispatch)
+    } catch (error) {
+      console.log("Error updating cart quantity:", error);
+
+    }
   };
 
-  const HandleDecrease = () => {
-    setCounter((prevCounter) => {
-      const newCounter = prevCounter > 1 ? prevCounter - 1 : 1;
-      updatecartQuantity(userData.email, ItemId, newCounter);
-      console.log("decrease")
-      return newCounter;
-    });
-  };
+  const HandleDecrease = async () => {
+    const newCounter = counter > 1 ? counter - 1 : 1;
+    setCounter(newCounter);
 
-  // Avoid dispatching unnecessarily. You can dispatch `getUserCartId` once.
+    try {
+      await updatecartQuantity(userData.email, id, newCounter);
+      await getUpdatedPrice(userData.email,dispatch)
+    } catch (error) {
+      console.log("Error updating cart quantity:", error);
+     
+    }
+  };
+ 
   useEffect(() => {
     dispatch(getUserCartId(id));
-  }, [dispatch, id]);  // Only run once on mount or when `id` changes
+  }, [dispatch, id]); 
 
   return (
     <div>

@@ -13,24 +13,24 @@ const VerticalCards = ({data}) => {
     const userData= useSelector((store) => store.user.currentUser);
     
 
-    const HandleCart = (id, image, title, description, price, rate) => {
-       const currentItem={
-        id,
-        image,
-        title,
-        description,
-        price,
-        rate,
-        quantity:1
-       }
-       if(userData===null){
-            return toast.warn("Please login",{autoClose:3000})
-       }
-
-       updateData(userData.email,currentItem,id,userData.quantity)
-       .then(()=>toast.success("Added to cart"))
-       .catch(()=>toast.error("Something went wrong"))
-    };
+    const HandleCart=async (id, image, title, description, price, rate)=>{
+              const cartData={
+                  productId: id,
+                  image,
+                  title,
+                  price,
+                  description,
+                  rate,
+                  quantity:1
+              }
+              if(userData===null){
+                  return toast.warn("Please login",{autoClose:3000})
+              }
+      
+              await updateData(userData.email,cartData)
+              .then(()=>toast.success("Added to cart"),{autoClose:3000})
+              .catch(()=>toast.error("Somethng went wrong"),{autoClose:3000})
+          }
    
     
 

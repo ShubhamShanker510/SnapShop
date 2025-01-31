@@ -4,7 +4,8 @@ const shareDataSlice = createSlice({
   name: "user",
   initialState:{
     currentUser:null,
-    cartId:null
+    cartId:null,
+    price:0,
   },
   reducers: {
 
@@ -13,11 +14,14 @@ const shareDataSlice = createSlice({
     },
     getUserCartId:(state,action)=>{
       state.cartId=action.payload
+    },
+    getPrice:(state,action)=>{
+      state.price=action.payload
     }
   },
 });
 
 
-export const { getUserData,getUserCartId } = shareDataSlice.actions;
+export const { getUserData,getUserCartId, getPrice } = shareDataSlice.actions;
 
 export default shareDataSlice.reducer;

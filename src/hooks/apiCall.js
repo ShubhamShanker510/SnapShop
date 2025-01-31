@@ -1,5 +1,8 @@
 import axios from "axios";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { getPrice } from "../redux/shareDate";
+
 
 export const updateData = async (id, updateItem, itemId, quantity) => {
     try {
@@ -119,4 +122,34 @@ export const deletewishlistdata=async(id,productId)=>{
     await axios.patch(`http://localhost:3000/user/${id}`, { wishlist: updatedWishlist });
 
     return getCartData()
+}
+export const getUpdatedPrice = async (id, dispatch) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/user/${id}`);
+      const currentUser = response.data;
+  
+      const cartLength = currentUser.cart.length;
+      let totalPrice = 0;
+      let price=0;
+      let quantity=0;
+  
+      for (let i = 0; i < cartLength; i++) {
+        price = currentUser.cart[i].price;
+        quantity = currentUser.cart[i].quantity;
+        totalPrice += (price * quantity);
+      }
+  
+      dispatch(getPrice(totalPrice));
+    } catch (error) {
+      console.log("Failed to get updated price", error);
+}
+}
+
+export const deleteAllCartDelete=async(id)=>{
+    const response=await axios.get(`http://localhost:3000/user/${id}`)
+    const currentUser=response.data;
+    await axios.patch(`http://localhost:3000/user/${id}`, { cart: [] });
+
+
+
 }

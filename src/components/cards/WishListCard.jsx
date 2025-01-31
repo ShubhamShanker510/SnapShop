@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import binImage from "../../assets/images/bin.png";
-import { deletecartdata, deletewishlistdata, getCartData, getWishlistData } from "../../hooks/apiCall";
+import { deletecartdata, deletewishlistdata, getCartData, getWishlistData, updateData } from "../../hooks/apiCall";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -17,12 +17,13 @@ const WishListCard = () => {
   const userData = useSelector((store) => store.user.currentUser);
   const dispatch = useDispatch();
   const location = useLocation();
-
+  
   const getData = async () => {
     try {
       if (location.pathname === "/cart") {
         const res = await getCartData(userData.email);
         setData(res);
+        
       } else {
         const res = await getWishlistData(userData.email);
         setData(res);
@@ -30,6 +31,7 @@ const WishListCard = () => {
     } catch (error) {
       console.error("Error fetching data", error);
     }
+    
   };
 
   useEffect(() => {
@@ -41,6 +43,8 @@ const WishListCard = () => {
       if (location.pathname === "/cart") {
         await deletecartdata(userData.email, id);
         setData(prevData => prevData.filter(item => item.id !== id));
+        await getUpdatedPrice(userData.email,dispatch)
+        
       } else {
         await deletewishlistdata(userData.email,id)
         setData(prevData => prevData.filter(item => item.id !== id)); 
@@ -52,6 +56,25 @@ const WishListCard = () => {
       toast.error("Failed to delete item", { autoClose: 1000 });
     }
   };
+
+  const HandleCart=async (id, image, title, description, price, rate)=>{
+          const cartData={
+              productId: id,
+              image,
+              title,
+              price,
+              description,
+              rate,
+              quantity:1
+          }
+          if(userData===null){
+              return toast.warn("Please login",{autoClose:3000})
+          }
+  
+          await updateData(userData.email,cartData)
+          .then(()=>toast.success("Added to cart"),{autoClose:3000})
+          .catch(()=>toast.error("Somethng went wrong"),{autoClose:3000})
+      }
 
   if (data.length === 0) {
     return <NotFound text={"Items Not Found!!"} delay={100} />;
@@ -91,7 +114,7 @@ const WishListCard = () => {
             <div className="down3 flex">
               {location.pathname !== "/cart" && (
                 <div className="cartbtn border border-red-600 px-[110px] py-1 bg-red-600 text-white rounded-sm hover:bg-white hover:text-red-600 mr-3 cursor-pointer shadow shadow-sm shadow-gray-700">
-                  <button>ADD TO CART</button>
+                  <button onClick={()=>HandleCart(item.id, item.image, item.title, item.description, item.price, item.rate)} >ADD TO CART</button>
                 </div>
               )}
               <div className="bin">

@@ -37,19 +37,19 @@ const ShippingInfo = () => {
             <div className="sec2 mb-8">
                 <div className='card flex flex-col pt-3'>
                     <label htmlFor="" className='mr-3 text-sm text-slate-600'>State</label>
-                    <input type="text" placeholder='Enter State' maxLength={19} className='border border-black rounded-sm p-1' value={state} onChange={(e)=>setState(e.target.value)} required/>
+                    <input type="text" placeholder='Enter State' className='border border-black rounded-sm p-1' value={state} onChange={(e)=>setState(e.target.value)} required/>
                 </div>
                 <div className="user flex flex-col pt-3 text-sm text-slate-600">
                 <label htmlFor="" className='mr-3'>City</label>
-                <input type="text" placeholder='Enter City' maxLength={19} className='border border-black rounded-sm p-1' value={city} onChange={(e)=>setCity(e.target.value)} required/>
+                <input type="text" placeholder='Enter City' className='border border-black rounded-sm p-1' value={city} onChange={(e)=>setCity(e.target.value)} required/>
                 </div>
                 <div className="cvv pt-3 flex flex-col text-sm text-slate-600">
                     <label htmlFor="" className='mr-3'>Postal Code</label>
-                    <input type="text" maxLength={3} className='border border-black rounded-sm p-1' placeholder='Enter Postal Code' value={postalCode} onChange={(e)=>setPostalCode(e.target.value)} required/>
+                    <input type="text" className='border border-black rounded-sm p-1' placeholder='Enter Postal Code' value={postalCode} onChange={(e)=>setPostalCode(e.target.value)} required/>
                 </div>
                 <div className="cvv pt-3 flex flex-col text-sm text-slate-600">
                     <label htmlFor="" className='mr-3'>Address</label>
-                    <input type="text" maxLength={3} className='border border-black rounded-sm p-1' placeholder='Enter Address' value={address} onChange={(e)=>setAddress(e.target.value)} required/>
+                    <input type="text" className='border border-black rounded-sm p-1' placeholder='Enter Address' value={address} onChange={(e)=>setAddress(e.target.value)} required/>
                 </div>
             </div>
             

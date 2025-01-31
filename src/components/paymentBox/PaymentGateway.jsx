@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
+import { deleteAllCartDelete } from '../../hooks/apiCall';
 
 const PaymentGateway = ({css}) => {
     const [cardNumber,setCardNumber]=useState('');
     const [name,setName]=useState('')
     const [cvv,setCvv]=useState('')
     const navigate=useNavigate()
+    const totalCurrentPrice=useSelector((store)=>store.user.price);
+    const userData = useSelector((store) => store.user.currentUser);
 
     const HandleSubmit=(e)=>{
         e.preventDefault();
@@ -32,8 +36,9 @@ const PaymentGateway = ({css}) => {
 
         if(valid){
             toast.success("Payment Successfull")
-            setTimeout(()=>{
+            setTimeout(async()=>{
                 navigate('/')
+                await deleteAllCartDelete(userData.email);
             },2000)
         }
     }
@@ -50,7 +55,7 @@ const PaymentGateway = ({css}) => {
             </div>
             <div className="sec2 mb-8">
                 <div className="amount pt-3">
-                    <p>Amount: Rs. <span className='text-green-600 font-bold'>5000</span></p>
+                    <p>Amount: Rs. <span className='text-green-600 font-bold'>{totalCurrentPrice}</span></p>
                 </div>
                 <div className='card flex flex-col pt-3'>
                     <label htmlFor="" className='mr-3 text-sm text-slate-600'>Card Number</label>
