@@ -20,9 +20,9 @@ const Card = () => {
         .catch((err) => console.error(err));
 
     }, [])
-    const HandleCart=(id, image, title, description, price, rate)=>{
+    const HandleCart=async(id, image, title, description, price, rate)=>{
             const cartData={
-                productId: id,
+                id,
                 image,
                 title,
                 price,
@@ -30,7 +30,9 @@ const Card = () => {
                 rate,
                 quantity:1
             }
-            updateData(userData,cartData)
+            await updateData(userData.email,cartData,id)
+            .then(()=>toast.success("Added to cart",{autoClose:3000}))
+            .catch(()=>toast.error("Please Login",{autoClose: 3000}))
             
             
         }

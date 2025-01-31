@@ -15,7 +15,7 @@ const VerticalCards = ({data}) => {
 
     const HandleCart=async (id, image, title, description, price, rate)=>{
               const cartData={
-                  productId: id,
+                  id,
                   image,
                   title,
                   price,
@@ -27,7 +27,7 @@ const VerticalCards = ({data}) => {
                   return toast.warn("Please login",{autoClose:3000})
               }
       
-              await updateData(userData.email,cartData)
+              await updateData(userData.email,cartData,id,)
               .then(()=>toast.success("Added to cart"),{autoClose:3000})
               .catch(()=>toast.error("Somethng went wrong"),{autoClose:3000})
           }

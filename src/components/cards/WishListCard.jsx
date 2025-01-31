@@ -43,17 +43,18 @@ const WishListCard = () => {
       if (location.pathname === "/cart") {
         await deletecartdata(userData.email, id);
         setData(prevData => prevData.filter(item => item.id !== id));
+        toast.success("Item Deleted Successfully", { autoClose: 1000 });
         await getUpdatedPrice(userData.email,dispatch)
         
       } else {
         await deletewishlistdata(userData.email,id)
         setData(prevData => prevData.filter(item => item.id !== id)); 
+        toast.success("Item Deleted Successfully", { autoClose: 1000 });
       }
-      toast.success("Item Deleted Successfully", { autoClose: 1000 });
+      
       dispatch(removeItemToCart(id));
     } catch (error) {
       console.error("Error deleting item:", error);
-      toast.error("Failed to delete item", { autoClose: 1000 });
     }
   };
 
