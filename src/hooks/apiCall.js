@@ -27,7 +27,7 @@ export const updateData = async (id, updateItem, itemId, quantity) => {
     } catch (error) {
       console.error("update API data error:", error);
     }
-  };
+};
   
 
 export const updateWihlistData=async(id,updateitem)=>{
