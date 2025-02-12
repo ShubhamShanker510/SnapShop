@@ -1,6 +1,7 @@
 const User=require('../models/user-model')
 const bcryptjs=require('bcryptjs')
-const jwt =require('jsonwebtoken')
+const jwt =require('jsonwebtoken');
+
 
 const registerUser=async(req,res)=>{
     try {
@@ -145,4 +146,72 @@ const getCurrentUser=async(req,res)=>{
     }
 }
 
-module.exports={registerUser, loginUser, getCurrentUser}
+const updateUserPassword = async (req, res) => {
+    try {
+      const userData = req.userInfo.userId;
+      const currentUser = await User.findOne({ _id: userData });
+
+  
+      if (!currentUser) {
+        return res.status(400).json({
+          success: false,
+          message: "No user found"
+        });
+      }
+  
+      const { oldPassword, newPassword } = req.body;
+  
+    
+      const isValidPassword = await bcryptjs.compare(oldPassword, currentUser.password);
+      console.log("isValidPassword", isValidPassword);
+  
+      if (!isValidPassword) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid old password"
+        });
+      }
+
+      const salt = await bcryptjs.genSalt(10);
+      const hashedPassword = await bcryptjs.hash(newPassword, salt);
+  
+      if (!hashedPassword) {
+        return res.status(400).json({
+          success: false,
+          message: "Unable to hash password"
+        });
+      }
+  
+
+      currentUser.password = hashedPassword;
+      await currentUser.save();
+  
+      return res.status(200).json({
+        success: true,
+        message: "Password updated successfully"
+      });
+    } catch (error) {
+      console.log("Update password error=>", error);
+      return res.status(500).json({
+        success: false,
+        message: "Something went wrong"
+      });
+    }
+  };
+
+
+// const logoutUser=async(req,res)=>{
+//     const currentUser=await User.findOne({id: req.userInfo.userId});
+
+//     if(!currentUser){
+//         return res.status(400).json({
+//             success: false,
+//             message:"No user found"
+//         })
+//     }
+
+// }
+
+
+  
+module.exports={registerUser, loginUser, getCurrentUser, updateUserPassword}
