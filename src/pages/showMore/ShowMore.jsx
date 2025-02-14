@@ -12,7 +12,7 @@ import Shimmer from '../../components/shimmer/Shimmer';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
-import { updateData, updateWihlistData} from '../../hooks/apiCall.js'
+import {updateWihlistData} from '../../hooks/apiCall.js'
 import { useSelector } from 'react-redux';
 
 
@@ -100,9 +100,9 @@ const ShowMore = () => {
             return toast.warn("Please login",{autoClose:3000})
         }
 
-        updateData(userData.email,cartData)
-        .then(()=>toast.success("Added to cart"))
-        .catch(()=>toast.error("Somethng went wrong"))
+        // updateData(userData.email,cartData)
+        // .then(()=>toast.success("Added to cart"))
+        // .catch(()=>toast.error("Somethng went wrong"))
     }
 
     if (!data1 || !data.length || id !== iD) {
@@ -136,7 +136,7 @@ const ShowMore = () => {
                             <div className="cartbtn border border-red-600 px-[100px] py-1 bg-red-600 text-white rounded-sm hover:bg-white hover:text-red-600 mr-3 cursor-pointer shadow shadow-sm shadow-gray-700">
                                 <button onClick={()=>HandleCart(data1.id, data1.image, data1.title, data1.description, data1.price*200, data1.rating.rate)}>ADD TO CART</button>
                             </div>
-                            <div className="wishlist cursor-pointer hover:invert-0">
+                            {/* <div className="wishlist cursor-pointer hover:invert-0">
                                 <button
                                     onClick={() =>
                                         wishListData(data1.id, data1.image, data1.title, data1.description, data1.price*200, data1.rating.rate)
@@ -144,7 +144,7 @@ const ShowMore = () => {
                                 >
                                 <img src={heartImage} className="hover:scale-125" alt="" width={30} />
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

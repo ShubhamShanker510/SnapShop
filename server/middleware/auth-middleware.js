@@ -2,7 +2,7 @@ const jwt=require('jsonwebtoken')
 
 const authMiddleware=async(req,res,next)=>{
     try {
-        const header=req.headers['authorization'];
+        const header=req.headers['authorization'] || req.cookies.accessToken;;
 
         const token=header && header.startsWith("Bearer ")? header.split(" ")[1]: header;
 
@@ -14,6 +14,13 @@ const authMiddleware=async(req,res,next)=>{
         }
 
         const decodeToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+        if(!decodeToken){
+            return res.status(400).json({
+                success: false,
+                message: "Unable to decode token"
+            })
+        }
 
         req.userInfo=decodeToken;
         console.log(req.userInfo)

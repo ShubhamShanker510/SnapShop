@@ -35,11 +35,22 @@ const Login = () => {
 
         if(isValid){
             try {
-                const response=await axios.get(`http://localhost:3000/user/${email1}`);
-                const {name,email,password,phone}=response.data;
-                if(password===password1){
-                    console.log(response.data);
-                    dispatch(getUserData(response.data));
+                const data={
+                    email:email1,
+                    password:password1
+                }
+                const response = await axios.post('http://localhost:3000/api/user/login', data, {
+                    withCredentials: true,
+                  });
+                  
+                console.log("response=>",response)
+                // const {name,email,phone}=response.data;
+                if(response.status===200){
+                    // console.log(response.data);
+                    const response1 = await axios.get('http://localhost:3000/api/user/get', {
+                        withCredentials: true,
+                      });
+                    dispatch(getUserData(response1.data));
                     toast.success("Login Successfull")
                     setTimeout(()=>{
                         navigate('/')

@@ -91,10 +91,9 @@ const loginUser=async(req,res)=>{
             name: getUser.name,
             email: getUser.email,
             phone: getUser.phone,
-            password: getUser.password
 
         },process.env.JWT_SECRET_KEY,{
-            expiresIn:"15m"
+            expiresIn:"1m"
         })
 
         if(!accessToken){
@@ -103,6 +102,13 @@ const loginUser=async(req,res)=>{
                 message: "Error while generating token"
             })
         }
+
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 30 * 60 * 1000, 
+          });
+          
 
         return res.status(200).json({
             sucess: true,
@@ -200,18 +206,26 @@ const updateUserPassword = async (req, res) => {
   };
 
 
-// const logoutUser=async(req,res)=>{
-//     const currentUser=await User.findOne({id: req.userInfo.userId});
+const logoutUser = async (req, res) => {
+    try {
+        res.clearCookie('accessToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production'
+        });
 
-//     if(!currentUser){
-//         return res.status(400).json({
-//             success: false,
-//             message:"No user found"
-//         })
-//     }
-
-// }
+        return res.status(200).json({
+            success: true,
+            message: "User logged out successfully"
+        });
+    } catch (error) {
+        console.log("Error in deleting cookie =>", error);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        });
+    }
+};
 
 
   
-module.exports={registerUser, loginUser, getCurrentUser, updateUserPassword}
+module.exports={registerUser, loginUser, getCurrentUser, updateUserPassword, logoutUser}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import binImage from "../../assets/images/bin.png";
-import { deletecartdata, deletewishlistdata, getCartData, getWishlistData, updateData } from "../../hooks/apiCall";
+import { deletecartdata, deletewishlistdata, getCartData, getWishlistData } from "../../hooks/apiCall";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";

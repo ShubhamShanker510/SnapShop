@@ -2,32 +2,38 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
-import { updateData } from '../../hooks/apiCall';
+import { addtoCart} from '../../hooks/apiCall';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart } from '../../redux/cartSlice';
 
 
 const VerticalCards = ({data}) => {
     const navigate=useNavigate();
-    const dispatch=useDispatch()
+    // const dispatch=useDispatch()
     const userData= useSelector((store) => store.user.currentUser);
     
+    // id, image, title, price, description, rate, quantity, category 
 
-    const HandleCart=async (id, image, title, description, price, rate)=>{
+    const HandleCart=async (id,image,title,description,price,rate,category)=>{
+        console.log("price", price)
+        console.log("datatype of price=>",typeof(price))
+
               const cartData={
-                  id,
+                  id: String(id),
                   image,
                   title,
                   price,
                   description,
                   rate,
-                  quantity:1
+                  quantity:1,
+                  category
               }
-              if(userData===null){
-                  return toast.warn("Please login",{autoClose:3000})
+              if (userData===null) {
+                return toast.warn("Please login", { autoClose: 3000 });
               }
+              
       
-              await updateData(userData.email,cartData,id,)
+              await addtoCart(cartData)
               .then(()=>toast.success("Added to cart"),{autoClose:3000})
               .catch(()=>toast.error("Somethng went wrong"),{autoClose:3000})
           }
@@ -54,7 +60,7 @@ const VerticalCards = ({data}) => {
                         <button className=' bg-gray-700 p-1 text-white rounded-sm hover:bg-gray-800 hover:shadow hover:shadow-sm hover:shadow-gray-600' onClick={()=>navigate(`/products/${item.id}`)}>Show More</button>
                     </div>
                     <div className="cartBtn">
-                        <button onClick={()=>HandleCart(item.id, item.image, item.title, item.description, item.price*200, item.rating.rate)} className=' bg-red-700 p-1 text-white rounded-sm hover:bg-red-800 hover:shadow hover:shadow-sm hover:shadow-gray-600'>Add to Cart</button>
+                        <button onClick={()=>HandleCart(item.id, item.image, item.title, item.description, item.price*200, item.rating.rate, item.category)} className=' bg-red-700 p-1 text-white rounded-sm hover:bg-red-800 hover:shadow hover:shadow-sm hover:shadow-gray-600'>Add to Cart</button>
                     </div>
                 </div>
             </div>

@@ -1,11 +1,4 @@
 const mongoose=require('mongoose')
-// "id": 4,
-// "image": "https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg",
-// "title": "Mens Casual Slim Fit",
-// "price": 3198,
-// "description": "The color could be slightly different between on the screen and in practice. / Please note that body builds vary by person, therefore, detailed size information should be reviewed below on the product description.",
-// "rate": 2.1,
-// "quantity": 1
 
 const cartSchema=mongoose.Schema({
     userId:{
@@ -15,7 +8,7 @@ const cartSchema=mongoose.Schema({
     cartProducts:[
         {
             id: {
-                type: Number,
+                type: String,
                 required:true
             },
             image:{
@@ -46,6 +39,9 @@ const cartSchema=mongoose.Schema({
                 type:String,
                 enum:["men's clothing","jewelery","electronics","women's clothing"],
                 required: true
+            },
+            totalPrice:{
+                type: Number,
             }
 
         }

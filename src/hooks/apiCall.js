@@ -4,30 +4,18 @@ import { toast } from "react-toastify";
 import { getPrice } from "../redux/shareDate";
 
 
-export const updateData = async (id, updateItem, itemId, quantity) => {
+export const addtoCart = async (cartData) => {
     try {
-      const response = await axios.get(`http://localhost:3000/user/${id}`);
-      const currentUser = response.data;
-  
-      if (currentUser) {
-        const itemExists = currentUser.cart.some((item) => item.id === itemId);
-  
-        if (itemExists) {
-          const updatedCart = currentUser.cart.map((item) =>
-            item.id === itemId
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
-          );
-          return axios.patch(`http://localhost:3000/user/${id}`, { cart: updatedCart });
-        } else {
-          const updatedCart = [...currentUser.cart, updateItem];
-          return axios.patch(`http://localhost:3000/user/${id}`, { cart: updatedCart });
-        }
-      }
+      const response = await axios.post('http://localhost:3000/api/cart/add-to-cart', cartData, {
+        withCredentials: true
+      });
+      console.log("Response from cart=>", response.data);
+      return response.data;
     } catch (error) {
-      console.error("update API data error:", error);
+      console.log("Error in cart response=>", error);
+      throw new Error("Failed to add item to cart");
     }
-};
+  };
   
 
 export const updateWihlistData=async(id,updateitem)=>{

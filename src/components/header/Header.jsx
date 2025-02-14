@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import logo from "../../assets/images/logo.png";
 import search from "../../assets/images/search.png";
 import profile from "../../assets/images/profile-user.png";
-import heart from "../../assets/images/heart.png";
+// import heart from "../../assets/images/heart.png";
 import bag from "../../assets/images/bag.png";
 import Box from "../hover_box/Box";
 import Box2 from "../hover_box/Box2";
@@ -108,12 +108,12 @@ const Header = () => {
             <p className="text-sm font-medium ">Profile</p>
             {box && <ProfileBox/>}
           </div>
-          <Link to='/wishlist'>
+          {/* <Link to='/wishlist'>
           <div className="wishlist mr-3 flex flex-col items-center cursor-pointer hover:scale-110 hover:font-bold">
             <img src={heart} alt="Wishlist Icon" width={20} />
             <p className="text-sm font-medium">Wishlist</p>
           </div>
-          </Link>
+          </Link> */}
           <Link to='/cart'>
           <div className="bag mr-3 flex flex-col items-center cursor-pointer hover:scale-110">
             <img src={bag} alt="Bag Icon" width={20} />

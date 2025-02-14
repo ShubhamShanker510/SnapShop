@@ -1,101 +1,263 @@
-const Cart=require('../models/cart-model')
-const uploadtocloundinary=require('../utils/cloudinary')
-const User=require('../models/user-model');
-// const { default: persistCombineReducers } = require('redux-persist/es/persistCombineReducers');
+const Cart = require("../models/cart-model");
+// const uploadtocloundinary = require("../utils/cloudinary");
+const User = require("../models/user-model");
 
-// "id": 4,
-// "image": "https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg",
-// "title": "Mens Casual Slim Fit",
-// "price": 3198,
-// "description": "The color could be slightly different between on the screen and in practice. / Please note that body builds vary by person, therefore, detailed size information should be reviewed below on the product description.",
-// "rate": 2.1,
-// "quantity": 1
+const addToCart = async (req, res) => {
+  try {
+    const userId = req.userInfo.userId;
+    const user = await User.findOne({ _id: userId });
 
-const addToCart=async(req,res)=>{
-   try {
-    const userId=req.userInfo.userId;
-    const user=await User.findOne({_id: userId});
-
-    if(!user){
-        return res.status(400).json({
-            success: false,
-            message: "No user found"
-        })
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "No user found",
+      });
     }
 
-    const {id, title, price, description, rate, quantity, category}=req.body;
+    const { id, image, title, price, description, rate, quantity, category } = req.body;
 
-    const image = req.body.image || (req.file ? req.file.path : null); 
-
-    if(!id || !image){
-        return res.status(400).json({
-            success: false,
-            message:"Item details are required"
-        })
+    if (!id || !price || isNaN(price) || isNaN(quantity)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid data. Price and Quantity should be valid numbers.",
+      });
     }
 
-    //upload to cloudinary and generating link
-    const cloudinaryUrl=await uploadtocloundinary(req.file.path)
+    const products = {
+      id:id,
+      image,
+      title,
+      price: parseFloat(price), // Ensure price is a number
+      description,
+      rate,
+      quantity,
+      category,
+      totalPrice: parseFloat(price) * quantity, // Ensure totalPrice is calculated correctly
+    };
 
-    if(!cloudinaryUrl){
-        return res.status(400).json({
-            success: false,
-            message:"file uploading to cloudinary failed"
-        })
-    }
-
-    const products={
-        id,
-        image: cloudinaryUrl,
-        title,
-        price,
-        description,
-        rate,
-        quantity,
-        category
-
-    }
-
-    // check if cart is already present of the current user
     const userCart = await Cart.findOne({ userId });
-    console.log("user cart=>",userCart)
 
-    if(!userCart){
-        await Cart.create({
-            userId,
-            cartProducts: [products]
-        })
-    }
-    else{
+    if (!userCart) {
+      await Cart.create({
+        userId,
+        cartProducts: [products],
+      });
+    } else {
+      const existingProduct = userCart.cartProducts.find(
+        (item) => item.id === id
+      );
 
-        //if existing product is already present
-        const exisitingProduct=userCart.cartProducts.find(item=> item.id===id);
-        console.log("exisitng product=>",userCart.cartProducts)
-
-        if(!exisitingProduct){
-            userCart.cartProducts.push(products);
-            await userCart.save();
-        }
-        else{
-            exisitingProduct.quantity+=quantity
-            await userCart.save();
-        }
+      if (!existingProduct) {
+        userCart.cartProducts.push(products);
+        await userCart.save();
+      } else {
+        existingProduct.quantity += quantity;
+        existingProduct.totalPrice = existingProduct.price * existingProduct.quantity;
+        await userCart.save();
+      }
     }
 
     return res.status(200).json({
-        success: true,
-        message: "Cart updated successfully",
-    })
-
-
-    
-   } catch (error) {
+      success: true,
+      message: "Cart updated successfully",
+    });
+  } catch (error) {
     console.log("Failed to add item to cart=>", error);
     return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+
+const updateCartQuantity=async(req,res)=>{
+  try {
+    const userId=req.userInfo.userId;
+    const userCart=await Cart.findOne({userId})
+    console.log("update cart quantity=>",userCart)
+
+    if(!userCart){
+      return res.status(400).json({
         success: false,
-        message: "Something went wrong"
+        message: "No user cart found"
+      })
+    }
+
+    
+    const id=req.params.id || req.body.id;
+
+    if(!id){
+      return res.status(400).json({
+        success: false,
+        message: "No product id found"
+      })
+    }
+
+    const {quantity}=req.body;
+
+    const existingProduct=await userCart.cartProducts.find((item)=> item.id===id);
+
+    if(!existingProduct){
+      return res.status(400).json({
+        sucess: false,
+        message: "Product not found"
+      })
+    }
+
+
+    existingProduct.quantity=quantity;
+    existingProduct.totalPrice=existingProduct.price*existingProduct.quantity;
+    await userCart.save();
+
+    return res.status(200).json({
+       success: true,
+       message: "Quantity updated sucessfully",
+       data: existingProduct
     })
-   }
+
+    
+  } catch (error) {
+    console.log("Update cart Quantity error=>",error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong"
+    })
+  }
+};
+
+const deleteCartProduct = async (req, res) => {
+  try {
+    const userId = req.userInfo.userId;
+    let userCart=await Cart.findOne({userId})
+
+    if (!userCart) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID not found",
+      });
+    }
+
+    const productId = req.params.id || req.body.id;
+
+    if (!productId) {
+      return res.status(400).json({
+        success: false,
+        message: "No product ID found",
+      });
+    }
+
+    
+    const existingProduct=await userCart.cartProducts.find((item)=> item.id===productId);
+
+
+    if(!existingProduct){
+      return res.status(400).json({
+        success: false,
+        message: "No product found"
+      })
+    }
+    
+
+    await Cart.updateOne(
+      { userId },
+      { $pull: { cartProducts: { id: productId } } }
+    );
+
+    userCart=await Cart.findOne({userId});
+    const removeUserfromCartDatabase=userCart.cartProducts.length;
+
+    if(removeUserfromCartDatabase===0){
+      await Cart.findOneAndDelete({ userId });
+    }
+    
+
+    return res.status(200).json({
+      success: true,
+      message: "Item deleted successfully",
+    });
+  } catch (error) {
+    console.log("Deleting cart product error =>", error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+const getallProducts=async(req,res)=>{
+  try {
+    const userId=req.userInfo.userId;
+    const userCart=await Cart.findOne({userId});
+
+    if(!userCart){
+      return res.status(400).json({
+        succes: false,
+        message: "No user found"
+      })
+    }
+
+    return res.status(200).json({
+      succes: true,
+      message: "All products found successfully",
+      cart: userCart.cartProducts
+    })
+    
+  } catch (error) {
+    console.log("Getting all products failed=>", error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong"
+    })
+  }
 }
 
-module.exports={addToCart}
+const getProductByproductId=async(req,res)=>{
+  try {
+    const userId=req.userInfo.userId;
+    const userCart=await Cart.findOne({userId});
+
+    if(!userCart){
+      return res.status(400).json({
+        sucess: false,
+        message: "No user found"
+      })
+    }
+
+    const productId=req.params.id || req.body.id;
+
+    if(!productId){
+      return res.status(400).json({
+        success: false,
+        message: "No product id found"
+      })
+    }
+
+    const exisitngProduct=userCart.cartProducts.find((item)=>item.id===productId);
+
+    if(!exisitngProduct){
+      return res.status(400).json({
+        success: false,
+        message: "Product not found"
+      })
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Product found successfully",
+      product: exisitngProduct
+    })
+
+    
+  } catch (error) {
+    console.log("Product by ID=> failed",error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong"
+    })
+  }
+}
+
+
+
+module.exports = { addToCart, updateCartQuantity, deleteCartProduct, getallProducts, getProductByproductId};

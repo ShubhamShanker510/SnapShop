@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Shimmer from '../shimmer/Shimmer';
 import { useNavigate } from 'react-router-dom';
-import { updateData } from '../../hooks/apiCall';
+import { addtoCart } from '../../hooks/apiCall';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
@@ -30,7 +30,7 @@ const Card = () => {
                 rate,
                 quantity:1
             }
-            await updateData(userData.email,cartData,id)
+            await addtoCart(cartData)
             .then(()=>toast.success("Added to cart",{autoClose:3000}))
             .catch(()=>toast.error("Please Login",{autoClose: 3000}))
             
