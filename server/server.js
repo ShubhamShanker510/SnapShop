@@ -14,9 +14,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
 
 app.use(cors({
-    credentials: true  
-  }));
-  
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],  // Allow PATCH
+    credentials: true,  // Make sure cookies are sent
+    origin: "http://localhost:5173"  // Specify the front-end origin
+}));
+
 
 app.use('/api/user',userRoute)
 app.use('/api/home',homeRoute)

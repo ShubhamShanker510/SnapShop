@@ -93,7 +93,7 @@ const loginUser=async(req,res)=>{
             phone: getUser.phone,
 
         },process.env.JWT_SECRET_KEY,{
-            expiresIn:"1m"
+            expiresIn:"50m"
         })
 
         if(!accessToken){

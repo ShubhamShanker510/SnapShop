@@ -7,7 +7,7 @@ const upload=require('../middleware/multer-middleware')
 router.get('/products', authMiddleware,getallProducts);
 router.get('/product/:id', authMiddleware, getProductByproductId);
 router.post('/add-to-cart', authMiddleware, addToCart);
-router.patch('/:id',authMiddleware, updateCartQuantity);
+router.post('/:id',authMiddleware, updateCartQuantity);
 router.delete('/:id', authMiddleware, deleteCartProduct);
 
 
